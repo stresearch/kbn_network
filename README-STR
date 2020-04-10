@@ -15,13 +15,19 @@ keep it between calls (maybe there's a better place? couldn't say):
   randomColor.
 
 Color generation:
-In the long run, we want a way to set the colors from outside. For
-now, the colorOptions "global" has a seed and a count (always 1). When
-it's passed to randomColor, we get an array with a color in it
-(vs. just the color), and the seed gets incremented. This ensures, not
-that the same state will have the same color run-to-run, but that the
-color set will always be the same, and the color for a given state
-won't change during a refresh.
+Added six (x 2) fields to the modules options display, allowing user
+to match a label (in our case, the node state) to a color. This can be
+partially specified, or not at all; during initialization,
+network_vis_controller iterates through the fields, stopping at the
+first one that's not set, and sets entries in the color dictionary and
+set of used colors appropriately.
+
+In addition, calls to randomColor alwyas pass an options object with
+seed and count set. Because count is set, it increments the seed on
+each call, and returns an array with a single color rather than just a
+color. This is robust only in that the set of colors used will be the
+same run-to-run, but there's no guarantee that they'll map to the same
+state.
 
 Incremental display:
 Applies only for node-relation networks, because that's what we
@@ -32,11 +38,7 @@ which causes the display to update.
 
 TODO:
 There is no way to identify a completely new network that needs
-redrawing, if it's the same size.
-There is no way to specify the desired colors, which would be very
-nice. Can reverse-engineer the random seed to get desired values, but
-that's not enough: we want to say, "Infected" is orange, every single
-time, and that's not an option that I've figured out yet.
+
 There are cases where the display ends up blank; when that happens,
 refresh won't fix it. Not sure what causes the blanking. Ideally,
 maybe the Refresh button would actually redraw, while time-based

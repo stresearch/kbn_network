@@ -70,6 +70,16 @@ module.controller('KbnNetworkVisController', function ($scope, $sce, $timeout, P
                 $scope.savedRowCount = resp.rows.length;
                 $scope.colorDicc = {};
                 $scope.usedColors = [];
+                // Allow pre-population of the color map from the options page, which has six fields.
+                for (var n = 1; n <= 6; n++) {
+                    var colorName = $scope.vis.params["colorName" + n];
+                    var color = $scope.vis.params["color" + n];
+                    if (colorName && colorName != '' && color && color != '') {
+                        $scope.colorDicc[colorName] = color;
+                        $scope.usedColors.push(color);
+                    }
+                }
+                
                 
                 // taa: These are the nodes that went into the "data" object for constructing
                 // the network. They'll have both an ID and a key; we index here by key.

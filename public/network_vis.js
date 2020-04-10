@@ -16,105 +16,117 @@ VisTypesRegistryProvider.register(NetworkVisTypeProvider);
 
 // define the TableVisType
 function NetworkVisTypeProvider(Private) {
-  const VisFactory = Private(VisFactoryProvider);
+    const VisFactory = Private(VisFactoryProvider);
 
-  // return the visType object, which kibana will use to display and configure new
-  // Vis object of this type.
-  return VisFactory.createAngularVisualization({
-    name: 'network',
-    title: 'Network',
-    image,
-    description: 'Displays a network node that link two fields that have been selected.',
-    visConfig: {
-      defaults: {
-        showLabels: true,
-        showPopup: false,
-        showColorLegend: true,
-        nodePhysics: true,
-        firstNodeColor: '#FD7BC4',
-        secondNodeColor: '#00d1ff',
-        canvasBackgroundColor: '#FFFFFF',
-        shapeFirstNode: 'dot',
-        shapeSecondNode: 'box',
-        displayArrow: false,
-        posArrow: 'to',
-        shapeArrow: 'arrow',
-        smoothType: 'continuous',
-        scaleArrow: 1,
-        maxCutMetricSizeNode: 5000,
-        maxCutMetricSizeEdge: 5000,
-        minCutMetricSizeNode: 0,
-        maxNodeSize: 80,
-        minNodeSize: 8,
-        maxEdgeSize: 20,
-        minEdgeSize: 0.1,
-        springConstant: 0.001,
-        gravitationalConstant: -35000,
-        labelColor: '#000000'
-      },
-      template: networkVisTemplate,
-    },
-    editorConfig: {
-      optionsTemplate: networkVisParamsTemplate,
-      schemas: new Schemas([
-        {
-          group: 'metrics',
-          name: 'size_node',
-          title: 'Node Size',
-          mustBeFirst: 'true',
-          min: 1,
-          max: 1,
-          defaults: [
-            { type: 'count', schema: 'size_node' }
-          ]
-          
-          //aggFilter: ['count', 'avg', 'sum', 'min', 'max', 'cardinality', 'std_dev']
+    // return the visType object, which kibana will use to display and configure new
+    // Vis object of this type.
+    return VisFactory.createAngularVisualization({
+        name: 'network',
+        title: 'Network',
+        image,
+        description: 'Displays a network node that link two fields that have been selected.',
+        visConfig: {
+            defaults: {
+                showLabels: true,
+                showPopup: false,
+                showColorLegend: true,
+                nodePhysics: true,
+                firstNodeColor: '#FD7BC4',
+                secondNodeColor: '#00d1ff',
+                canvasBackgroundColor: '#FFFFFF',
+                shapeFirstNode: 'dot',
+                shapeSecondNode: 'box',
+                displayArrow: false,
+                posArrow: 'to',
+                shapeArrow: 'arrow',
+                smoothType: 'continuous',
+                scaleArrow: 1,
+                maxCutMetricSizeNode: 5000,
+                maxCutMetricSizeEdge: 5000,
+                minCutMetricSizeNode: 0,
+                maxNodeSize: 80,
+                minNodeSize: 8,
+                maxEdgeSize: 20,
+                minEdgeSize: 0.1,
+                springConstant: 0.001,
+                gravitationalConstant: -35000,
+                labelColor: '#000000',
+                colorName1: '',
+                color1: '#000000',
+                colorName2: '',
+                color2: '#000000',
+                colorName3: '',
+                color3: '#000000',
+                colorName4: '',
+                color4: '#000000',
+                colorName5: '',
+                color5: '#000000',
+                colorName6: '',
+                color6: '#000000',
+            },
+            template: networkVisTemplate,
         },
-        {
-          group: 'metrics',
-          name: 'size_edge',
-          title: 'Edge Size',
-          max: 1,
+        editorConfig: {
+            optionsTemplate: networkVisParamsTemplate,
+            schemas: new Schemas([
+                {
+                    group: 'metrics',
+                    name: 'size_node',
+                    title: 'Node Size',
+                    mustBeFirst: 'true',
+                    min: 1,
+                    max: 1,
+                    defaults: [
+                        { type: 'count', schema: 'size_node' }
+                    ]
+                    
+                    //aggFilter: ['count', 'avg', 'sum', 'min', 'max', 'cardinality', 'std_dev']
+                },
+                {
+                    group: 'metrics',
+                    name: 'size_edge',
+                    title: 'Edge Size',
+                    max: 1,
+                },
+                {
+                    group: 'buckets',
+                    name: 'first',
+                    icon: 'fa fa-circle-thin',
+                    mustBeFirst: 'true',
+                    title: 'Node',
+                    min: 1,
+                    max: 2,
+                    aggFilter: ['terms']//Only have sense choose terms
+                },
+                {
+                    group: 'buckets',
+                    name: 'second',
+                    icon: 'fa fa-random',
+                    title: 'Relation',
+                    max: 1,
+                    aggFilter: ['terms']
+                },
+                {
+                    group: 'buckets',
+                    name: 'colornode',
+                    icon: 'fa fa-paint-brush',
+                    title: 'Node Color',
+                    max: 1,
+                    aggFilter: ['terms']
+                }
+            ])
         },
-        {
-          group: 'buckets',
-          name: 'first',
-          icon: 'fa fa-circle-thin',
-          mustBeFirst: 'true',
-          title: 'Node',
-          min: 1,
-          max: 2,
-          aggFilter: ['terms']//Only have sense choose terms
+        responseHandlerConfig: {
+            asAggConfigResults: true
         },
-        {
-          group: 'buckets',
-          name: 'second',
-          icon: 'fa fa-random',
-          title: 'Relation',
-          max: 1,
-          aggFilter: ['terms']
+        ////////MIRAR THIS
+        hierarchicalData: function (vis) {
+            return true;
         },
-        {
-          group: 'buckets',
-          name: 'colornode',
-          icon: 'fa fa-paint-brush',
-          title: 'Node Color',
-          max: 1,
-          aggFilter: ['terms']
-        }
-      ])
-    },
-    responseHandlerConfig: {
-      asAggConfigResults: true
-    },
-    ////////MIRAR THIS
-    hierarchicalData: function (vis) {
-      return true;
-    },
-    ////////////////////
+        ////////////////////
 
 
-  });
+    });
 }
 
 export default NetworkVisTypeProvider;
