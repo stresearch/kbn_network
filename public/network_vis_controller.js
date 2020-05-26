@@ -127,8 +127,9 @@ module.controller('KbnNetworkVisController', function ($scope, $sce, $timeout, P
                 $scope.savedRowCount = resp.rows.length;
                 $scope.colorDicc = {};
                 $scope.usedColors = [];
-                // Allow pre-population of the color map from the options page, which has six fields.
-                for (var n = 1; n <= 7; n++) {
+                // Allow pre-population of the color map from the options page, which has eight fields:
+                // susceptible, infected, sick, hospitalized, cured, recovered, dead, immune
+                for (var n = 1; n <= 8; n++) {
                     var colorName = $scope.vis.params["colorName" + n];
                     var color = $scope.vis.params["color" + n];
                     if (colorName && colorName != '' && color && color != '') {

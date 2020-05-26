@@ -64,7 +64,9 @@ function NetworkVisTypeProvider(Private) {
                 colorName6: '',
                 color6: '#000000',
                 colorName7: '',
-                color7: '#000000'
+                color7: '#000000',
+                colorName8: '',
+                color8: '#000000'
             },
             template: networkVisTemplate,
         },
